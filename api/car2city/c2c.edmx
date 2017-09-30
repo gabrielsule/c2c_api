@@ -1,0 +1,696 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CarTwoCityModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Pais">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" />
+          <Property Name="prefijo" Type="nvarchar" MaxLength="5" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TipoDocumento">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="TipoEquipaje">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" />
+          <Property Name="apellido" Type="nvarchar" MaxLength="50" />
+          <Property Name="usuario" Type="nvarchar" MaxLength="50" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
+          <Property Name="sexo" Type="nchar" MaxLength="1" />
+          <Property Name="idPais" Type="int" />
+          <Property Name="idTipoDoc" Type="int" />
+          <Property Name="numeroDoc" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="telefono" Type="nvarchar" MaxLength="50" />
+          <Property Name="imagen" Type="nvarchar" MaxLength="50" />
+          <Property Name="puntosConductor" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="puntosPasajero" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="kmAcumulados" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="co2" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="fechaRegistro" Type="date" />
+          <Property Name="fechaIngreso" Type="date" />
+        </EntityType>
+        <EntityType Name="Vehiculo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="patente" Type="nvarchar" MaxLength="50" />
+          <Property Name="marca" Type="nvarchar" MaxLength="50" />
+          <Property Name="modelo" Type="int" />
+          <Property Name="año" Type="int" />
+          <Property Name="color" Type="nvarchar" MaxLength="50" />
+          <Property Name="imagen" Type="nvarchar" MaxLength="50" />
+          <Property Name="isUsuario" Type="int" />
+        </EntityType>
+        <EntityType Name="Viaje">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="origen" Type="nvarchar" MaxLength="50" />
+          <Property Name="destino" Type="nvarchar" MaxLength="50" />
+          <Property Name="lat1" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="lng1" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="lat2" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="lng2" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="kilometros" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="co2" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="idVehiculo" Type="int" />
+        </EntityType>
+        <EntityType Name="ViajeCaracteristicas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idViaje" Type="int" />
+          <Property Name="asientos" Type="int" />
+          <Property Name="idEquipaje" Type="int" />
+          <Property Name="bebida" Type="bit" />
+          <Property Name="comer" Type="bit" />
+          <Property Name="musica" Type="bit" />
+          <Property Name="fumar" Type="bit" />
+          <Property Name="mixto" Type="bit" />
+          <Property Name="mascota" Type="bit" />
+          <Property Name="flexibilidad" Type="int" />
+          <Property Name="aceptacion" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CarTwoCity.dbo.ViajeUsuario' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViajeUsuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idUsuario" Type="int" />
+          <Property Name="idViaje" Type="int" />
+        </EntityType>
+        <Association Name="FK_Usuario_Pais">
+          <End Role="Pais" Type="Self.Pais" Multiplicity="0..1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pais">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="idPais" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_TipoDocumento1">
+          <End Role="TipoDocumento" Type="Self.TipoDocumento" Multiplicity="0..1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoDocumento">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="idTipoDoc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehiculo_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Vehiculo">
+              <PropertyRef Name="isUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Viaje_Vehiculo">
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="0..1" />
+          <End Role="Viaje" Type="Self.Viaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehiculo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Viaje">
+              <PropertyRef Name="idVehiculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ViajeCaracteristicas_TipoEquipaje">
+          <End Role="TipoEquipaje" Type="Self.TipoEquipaje" Multiplicity="0..1" />
+          <End Role="ViajeCaracteristicas" Type="Self.ViajeCaracteristicas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoEquipaje">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ViajeCaracteristicas">
+              <PropertyRef Name="idEquipaje" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ViajeCaracteristicas_Viaje">
+          <End Role="Viaje" Type="Self.Viaje" Multiplicity="0..1" />
+          <End Role="ViajeCaracteristicas" Type="Self.ViajeCaracteristicas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Viaje">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ViajeCaracteristicas">
+              <PropertyRef Name="idViaje" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ViajeUsuario_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="ViajeUsuario" Type="Self.ViajeUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ViajeUsuario">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ViajeUsuario_Viaje">
+          <End Role="Viaje" Type="Self.Viaje" Multiplicity="0..1" />
+          <End Role="ViajeUsuario" Type="Self.ViajeUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Viaje">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ViajeUsuario">
+              <PropertyRef Name="idViaje" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="sp_UsuarioInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombre" Type="nvarchar" Mode="In" />
+          <Parameter Name="apellido" Type="nvarchar" Mode="In" />
+          <Parameter Name="usuario" Type="nvarchar" Mode="In" />
+          <Parameter Name="email" Type="nvarchar" Mode="In" />
+          <Parameter Name="sexo" Type="nchar" Mode="In" />
+          <Parameter Name="idPais" Type="int" Mode="In" />
+          <Parameter Name="idTipoDoc" Type="int" Mode="In" />
+          <Parameter Name="numeroDoc" Type="numeric" Mode="In" />
+          <Parameter Name="telefono" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="CarTwoCityModelStoreContainer">
+          <EntitySet Name="Pais" EntityType="Self.Pais" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoDocumento" EntityType="Self.TipoDocumento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoEquipaje" EntityType="Self.TipoEquipaje" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vehiculo" EntityType="Self.Vehiculo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Viaje" EntityType="Self.Viaje" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ViajeCaracteristicas" EntityType="Self.ViajeCaracteristicas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ViajeUsuario" EntityType="Self.ViajeUsuario" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViajeUsuario].[id] AS [id], 
+    [ViajeUsuario].[idUsuario] AS [idUsuario], 
+    [ViajeUsuario].[idViaje] AS [idViaje]
+    FROM [dbo].[ViajeUsuario] AS [ViajeUsuario]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Usuario_Pais" Association="Self.FK_Usuario_Pais">
+            <End Role="Pais" EntitySet="Pais" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_TipoDocumento1" Association="Self.FK_Usuario_TipoDocumento1">
+            <End Role="TipoDocumento" EntitySet="TipoDocumento" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehiculo_Usuario" Association="Self.FK_Vehiculo_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Viaje_Vehiculo" Association="Self.FK_Viaje_Vehiculo">
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+            <End Role="Viaje" EntitySet="Viaje" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ViajeCaracteristicas_TipoEquipaje" Association="Self.FK_ViajeCaracteristicas_TipoEquipaje">
+            <End Role="TipoEquipaje" EntitySet="TipoEquipaje" />
+            <End Role="ViajeCaracteristicas" EntitySet="ViajeCaracteristicas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ViajeCaracteristicas_Viaje" Association="Self.FK_ViajeCaracteristicas_Viaje">
+            <End Role="Viaje" EntitySet="Viaje" />
+            <End Role="ViajeCaracteristicas" EntitySet="ViajeCaracteristicas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ViajeUsuario_Usuario" Association="Self.FK_ViajeUsuario_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="ViajeUsuario" EntitySet="ViajeUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ViajeUsuario_Viaje" Association="Self.FK_ViajeUsuario_Viaje">
+            <End Role="Viaje" EntitySet="Viaje" />
+            <End Role="ViajeUsuario" EntitySet="ViajeUsuario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CarTwoCityModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Pai">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="prefijo" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuario_Pais" FromRole="Pais" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TipoDocumento">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuario_TipoDocumento1" FromRole="TipoDocumento" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="TipoEquipaje">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ViajeCaracteristicas" Relationship="Self.FK_ViajeCaracteristicas_TipoEquipaje" FromRole="TipoEquipaje" ToRole="ViajeCaracteristicas" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="usuario1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sexo" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="idPais" Type="Int32" />
+          <Property Name="idTipoDoc" Type="Int32" />
+          <Property Name="numeroDoc" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="imagen" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="puntosConductor" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="puntosPasajero" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="kmAcumulados" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="co2" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="fechaRegistro" Type="DateTime" Precision="0" />
+          <Property Name="fechaIngreso" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Pai" Relationship="Self.FK_Usuario_Pais" FromRole="Usuario" ToRole="Pais" />
+          <NavigationProperty Name="TipoDocumento" Relationship="Self.FK_Usuario_TipoDocumento1" FromRole="Usuario" ToRole="TipoDocumento" />
+          <NavigationProperty Name="Vehiculoes" Relationship="Self.FK_Vehiculo_Usuario" FromRole="Usuario" ToRole="Vehiculo" />
+          <NavigationProperty Name="ViajeUsuarios" Relationship="CarTwoCityModel.FK_ViajeUsuario_Usuario" FromRole="Usuario" ToRole="ViajeUsuario" />
+        </EntityType>
+        <EntityType Name="Vehiculo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="patente" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="marca" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="modelo" Type="Int32" />
+          <Property Name="año" Type="Int32" />
+          <Property Name="color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="imagen" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="isUsuario" Type="Int32" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Vehiculo_Usuario" FromRole="Vehiculo" ToRole="Usuario" />
+          <NavigationProperty Name="Viajes" Relationship="Self.FK_Viaje_Vehiculo" FromRole="Vehiculo" ToRole="Viaje" />
+        </EntityType>
+        <EntityType Name="Viaje">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="origen" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="destino" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="lat1" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="lng1" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="lat2" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="lng2" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="kilometros" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="co2" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="idVehiculo" Type="Int32" />
+          <NavigationProperty Name="Vehiculo" Relationship="Self.FK_Viaje_Vehiculo" FromRole="Viaje" ToRole="Vehiculo" />
+          <NavigationProperty Name="ViajeCaracteristicas" Relationship="Self.FK_ViajeCaracteristicas_Viaje" FromRole="Viaje" ToRole="ViajeCaracteristicas" />
+          <NavigationProperty Name="ViajeUsuarios" Relationship="CarTwoCityModel.FK_ViajeUsuario_Viaje" FromRole="Viaje" ToRole="ViajeUsuario" />
+        </EntityType>
+        <EntityType Name="ViajeCaracteristica">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idViaje" Type="Int32" />
+          <Property Name="asientos" Type="Int32" />
+          <Property Name="idEquipaje" Type="Int32" />
+          <Property Name="bebida" Type="Boolean" />
+          <Property Name="comer" Type="Boolean" />
+          <Property Name="musica" Type="Boolean" />
+          <Property Name="fumar" Type="Boolean" />
+          <Property Name="mixto" Type="Boolean" />
+          <Property Name="mascota" Type="Boolean" />
+          <Property Name="flexibilidad" Type="Int32" />
+          <Property Name="aceptacion" Type="Boolean" />
+          <NavigationProperty Name="TipoEquipaje" Relationship="Self.FK_ViajeCaracteristicas_TipoEquipaje" FromRole="ViajeCaracteristicas" ToRole="TipoEquipaje" />
+          <NavigationProperty Name="Viaje" Relationship="Self.FK_ViajeCaracteristicas_Viaje" FromRole="ViajeCaracteristicas" ToRole="Viaje" />
+        </EntityType>
+        <Association Name="FK_Usuario_Pais">
+          <End Role="Pais" Type="Self.Pai" Multiplicity="0..1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pais">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="idPais" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_TipoDocumento1">
+          <End Role="TipoDocumento" Type="Self.TipoDocumento" Multiplicity="0..1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoDocumento">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="idTipoDoc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ViajeCaracteristicas_TipoEquipaje">
+          <End Role="TipoEquipaje" Type="Self.TipoEquipaje" Multiplicity="0..1" />
+          <End Role="ViajeCaracteristicas" Type="Self.ViajeCaracteristica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoEquipaje">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ViajeCaracteristicas">
+              <PropertyRef Name="idEquipaje" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehiculo_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Vehiculo">
+              <PropertyRef Name="isUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Viaje_Vehiculo">
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="0..1" />
+          <End Role="Viaje" Type="Self.Viaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehiculo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Viaje">
+              <PropertyRef Name="idVehiculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ViajeCaracteristicas_Viaje">
+          <End Role="Viaje" Type="Self.Viaje" Multiplicity="0..1" />
+          <End Role="ViajeCaracteristicas" Type="Self.ViajeCaracteristica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Viaje">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ViajeCaracteristicas">
+              <PropertyRef Name="idViaje" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CarTwoCityEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Pais" EntityType="Self.Pai" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="TipoDocumentoes" EntityType="Self.TipoDocumento" />
+          <EntitySet Name="TipoEquipajes" EntityType="Self.TipoEquipaje" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
+          <EntitySet Name="Vehiculoes" EntityType="Self.Vehiculo" />
+          <EntitySet Name="Viajes" EntityType="Self.Viaje" />
+          <EntitySet Name="ViajeCaracteristicas" EntityType="Self.ViajeCaracteristica" />
+          <AssociationSet Name="FK_Usuario_Pais" Association="Self.FK_Usuario_Pais">
+            <End Role="Pais" EntitySet="Pais" />
+            <End Role="Usuario" EntitySet="Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_TipoDocumento1" Association="Self.FK_Usuario_TipoDocumento1">
+            <End Role="TipoDocumento" EntitySet="TipoDocumentoes" />
+            <End Role="Usuario" EntitySet="Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ViajeCaracteristicas_TipoEquipaje" Association="Self.FK_ViajeCaracteristicas_TipoEquipaje">
+            <End Role="TipoEquipaje" EntitySet="TipoEquipajes" />
+            <End Role="ViajeCaracteristicas" EntitySet="ViajeCaracteristicas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehiculo_Usuario" Association="Self.FK_Vehiculo_Usuario">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Vehiculo" EntitySet="Vehiculoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Viaje_Vehiculo" Association="Self.FK_Viaje_Vehiculo">
+            <End Role="Vehiculo" EntitySet="Vehiculoes" />
+            <End Role="Viaje" EntitySet="Viajes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ViajeCaracteristicas_Viaje" Association="Self.FK_ViajeCaracteristicas_Viaje">
+            <End Role="Viaje" EntitySet="Viajes" />
+            <End Role="ViajeCaracteristicas" EntitySet="ViajeCaracteristicas" />
+          </AssociationSet>
+          <EntitySet Name="ViajeUsuarios" EntityType="CarTwoCityModel.ViajeUsuario" />
+          <AssociationSet Name="FK_ViajeUsuario_Usuario" Association="CarTwoCityModel.FK_ViajeUsuario_Usuario">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="ViajeUsuario" EntitySet="ViajeUsuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ViajeUsuario_Viaje" Association="CarTwoCityModel.FK_ViajeUsuario_Viaje">
+            <End Role="Viaje" EntitySet="Viajes" />
+            <End Role="ViajeUsuario" EntitySet="ViajeUsuarios" />
+          </AssociationSet>
+          <FunctionImport Name="sp_UsuarioInsert">
+            <Parameter Name="nombre" Mode="In" Type="String" />
+            <Parameter Name="apellido" Mode="In" Type="String" />
+            <Parameter Name="usuario" Mode="In" Type="String" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="sexo" Mode="In" Type="String" />
+            <Parameter Name="idPais" Mode="In" Type="Int32" />
+            <Parameter Name="idTipoDoc" Mode="In" Type="Int32" />
+            <Parameter Name="numeroDoc" Mode="In" Type="Decimal" />
+            <Parameter Name="telefono" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <EntityType Name="ViajeUsuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idUsuario" Type="Int32" />
+          <Property Name="idViaje" Type="Int32" />
+          <NavigationProperty Name="Usuario" Relationship="CarTwoCityModel.FK_ViajeUsuario_Usuario" FromRole="ViajeUsuario" ToRole="Usuario" />
+          <NavigationProperty Name="Viaje" Relationship="CarTwoCityModel.FK_ViajeUsuario_Viaje" FromRole="ViajeUsuario" ToRole="Viaje" />
+        </EntityType>
+        <Association Name="FK_ViajeUsuario_Usuario">
+          <End Type="CarTwoCityModel.Usuario" Role="Usuario" Multiplicity="0..1" />
+          <End Type="CarTwoCityModel.ViajeUsuario" Role="ViajeUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ViajeUsuario">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ViajeUsuario_Viaje">
+          <End Type="CarTwoCityModel.Viaje" Role="Viaje" Multiplicity="0..1" />
+          <End Type="CarTwoCityModel.ViajeUsuario" Role="ViajeUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Viaje">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ViajeUsuario">
+              <PropertyRef Name="idViaje" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CarTwoCityModelStoreContainer" CdmEntityContainer="CarTwoCityEntities">
+          <EntitySetMapping Name="Pais">
+            <EntityTypeMapping TypeName="CarTwoCityModel.Pai">
+              <MappingFragment StoreEntitySet="Pais">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="prefijo" ColumnName="prefijo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="CarTwoCityModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoDocumentoes">
+            <EntityTypeMapping TypeName="CarTwoCityModel.TipoDocumento">
+              <MappingFragment StoreEntitySet="TipoDocumento">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoEquipajes">
+            <EntityTypeMapping TypeName="CarTwoCityModel.TipoEquipaje">
+              <MappingFragment StoreEntitySet="TipoEquipaje">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="CarTwoCityModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellido" ColumnName="apellido" />
+                <ScalarProperty Name="usuario1" ColumnName="usuario" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="sexo" ColumnName="sexo" />
+                <ScalarProperty Name="idPais" ColumnName="idPais" />
+                <ScalarProperty Name="idTipoDoc" ColumnName="idTipoDoc" />
+                <ScalarProperty Name="numeroDoc" ColumnName="numeroDoc" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="imagen" ColumnName="imagen" />
+                <ScalarProperty Name="puntosConductor" ColumnName="puntosConductor" />
+                <ScalarProperty Name="puntosPasajero" ColumnName="puntosPasajero" />
+                <ScalarProperty Name="kmAcumulados" ColumnName="kmAcumulados" />
+                <ScalarProperty Name="co2" ColumnName="co2" />
+                <ScalarProperty Name="fechaRegistro" ColumnName="fechaRegistro" />
+                <ScalarProperty Name="fechaIngreso" ColumnName="fechaIngreso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vehiculoes">
+            <EntityTypeMapping TypeName="CarTwoCityModel.Vehiculo">
+              <MappingFragment StoreEntitySet="Vehiculo">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="patente" ColumnName="patente" />
+                <ScalarProperty Name="marca" ColumnName="marca" />
+                <ScalarProperty Name="modelo" ColumnName="modelo" />
+                <ScalarProperty Name="año" ColumnName="año" />
+                <ScalarProperty Name="color" ColumnName="color" />
+                <ScalarProperty Name="imagen" ColumnName="imagen" />
+                <ScalarProperty Name="isUsuario" ColumnName="isUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Viajes">
+            <EntityTypeMapping TypeName="CarTwoCityModel.Viaje">
+              <MappingFragment StoreEntitySet="Viaje">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="origen" ColumnName="origen" />
+                <ScalarProperty Name="destino" ColumnName="destino" />
+                <ScalarProperty Name="lat1" ColumnName="lat1" />
+                <ScalarProperty Name="lng1" ColumnName="lng1" />
+                <ScalarProperty Name="lat2" ColumnName="lat2" />
+                <ScalarProperty Name="lng2" ColumnName="lng2" />
+                <ScalarProperty Name="kilometros" ColumnName="kilometros" />
+                <ScalarProperty Name="co2" ColumnName="co2" />
+                <ScalarProperty Name="idVehiculo" ColumnName="idVehiculo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViajeCaracteristicas">
+            <EntityTypeMapping TypeName="CarTwoCityModel.ViajeCaracteristica">
+              <MappingFragment StoreEntitySet="ViajeCaracteristicas">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idViaje" ColumnName="idViaje" />
+                <ScalarProperty Name="asientos" ColumnName="asientos" />
+                <ScalarProperty Name="idEquipaje" ColumnName="idEquipaje" />
+                <ScalarProperty Name="bebida" ColumnName="bebida" />
+                <ScalarProperty Name="comer" ColumnName="comer" />
+                <ScalarProperty Name="musica" ColumnName="musica" />
+                <ScalarProperty Name="fumar" ColumnName="fumar" />
+                <ScalarProperty Name="mixto" ColumnName="mixto" />
+                <ScalarProperty Name="mascota" ColumnName="mascota" />
+                <ScalarProperty Name="flexibilidad" ColumnName="flexibilidad" />
+                <ScalarProperty Name="aceptacion" ColumnName="aceptacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViajeUsuarios">
+            <EntityTypeMapping TypeName="CarTwoCityModel.ViajeUsuario">
+              <MappingFragment StoreEntitySet="ViajeUsuario">
+                <ScalarProperty Name="idViaje" ColumnName="idViaje" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_UsuarioInsert" FunctionName="CarTwoCityModel.Store.sp_UsuarioInsert" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
